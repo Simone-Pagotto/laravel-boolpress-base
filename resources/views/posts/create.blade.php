@@ -18,6 +18,16 @@
         <label for="">Descrizione : </label>
         <input type="text" name="description_in">
 
+        <fieldset>
+            <legend>Selezione i tags</legend>
+            @foreach($tags as $tag)
+                <div>
+                    <input type="checkbox" id="{{'chk_' . $tag->name}}" name="tags_in[]" value="{{$tag->id}}">
+                    <label for="{{'chk_' . $tag->name}}">{{$tag->name}}</label>
+                </div>
+            @endforeach
+        </fieldset>
+
         <button type="submit">Crea Post</button>
 
     </form>

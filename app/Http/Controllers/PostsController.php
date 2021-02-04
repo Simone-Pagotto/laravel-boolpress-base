@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Post;
 use App\PostInformation;
+use App\Tag;
 use Illuminate\Support\Str;
 
 class PostsController extends Controller
@@ -37,7 +38,9 @@ class PostsController extends Controller
     {
         $categories = Category::all();
 
-        return view('posts.create', compact('categories'));
+        $tags = Tag::all();
+
+        return view('posts.create', compact('categories','tags'));
     }
 
     /**
@@ -65,6 +68,10 @@ class PostsController extends Controller
         $newPost->save();
 
         $newPost->postInformation()->save($newPostInformation);//salvataggio relationship
+
+        foreach($request['tags_in'] as $tagId){
+            $newPost->tags()->attach($tagId);
+        }
 
     
         return view('posts.success');
@@ -138,6 +145,12 @@ class PostsController extends Controller
      */
     public function destroy(Post $post)
     {
+        /* dd($post->tags());
+        foreach($request['tags_in'] as $tagId){
+            $postt->tags()->attach($tagId);
+        } */
+
+
         $post->postInformation->delete();
 
         $post->delete;

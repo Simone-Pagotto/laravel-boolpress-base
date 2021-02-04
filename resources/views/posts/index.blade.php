@@ -33,7 +33,7 @@
                     </th>
                     <th>
                         @foreach($post->tags as $tag)
-                            {{$tag->name}}
+                            <a>{{$tag->name}}</a>
                             <br>
                         @endforeach
                     </th>
