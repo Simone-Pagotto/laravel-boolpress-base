@@ -32,6 +32,12 @@
                         {{-- {{$post->postInformation->description??'no description available'}} --}}
                     </th>
                     <th>
+                        @foreach($post->tags as $tag)
+                            {{$tag->name}}
+                            <br>
+                        @endforeach
+                    </th>
+                    <th>
                         <a href="{{route('posts.edit',$post->id)}}">Aggiorna</a>
                     </th>
                     <th>

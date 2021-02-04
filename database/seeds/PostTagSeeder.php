@@ -13,7 +13,7 @@ class PostTagSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(Faker $faker)
     {
         //dobbiamo agganciare randomicamente elementi che esistono già in altre tabelle
         $posts = Post::all();

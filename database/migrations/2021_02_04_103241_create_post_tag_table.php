@@ -16,7 +16,7 @@ class CreatePostTagTable extends Migration
         Schema::create('post_tag', function (Blueprint $table) {
             $table->id();
             //definire colonne con chiavi esterne e i vincoli
-            $table->unsignerBigInteger('post_id');//non devono avere il bigIncrements ma devono poter contenere un bigInteger value
+            $table->unsignedBigInteger('post_id');//non devono avere il bigIncrements ma devono poter contenere un bigInteger value
             $table->unsignedBigInteger('tag_id');
             $table->foreign('post_id')->references('id')->on('posts');
             $table->foreign('tag_id')->references('id')->on('tags');

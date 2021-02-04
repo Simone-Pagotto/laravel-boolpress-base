@@ -19,7 +19,7 @@ class PostsController extends Controller
     public function index()
     {
         $columns = [
-            '#','Titolo','Categoria','Descrizione','Aggiorna','Cancella'
+            '#','Titolo','Categoria','Descrizione','Tags','Aggiorna','Cancella'
         ];
         $posts = Post::all();
 
