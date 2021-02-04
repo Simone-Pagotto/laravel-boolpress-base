@@ -18,28 +18,9 @@ class PostsController extends Controller
     public function index()
     {
         $columns = [
-            'Titolo','Categoria','Descrizione'
+            '#','Titolo','Categoria','Descrizione','Aggiorna','Cancella'
         ];
         $posts = Post::all();
-
-        foreach ( $posts as $post ){
-
-            $post
-                ->postInformation()->join('posts_information','description')
-                /* ->category()->join('categories','title') */
-                ->select('posts.title',/* 'categories.title', */'posts_information.description')
-                ->get();
-
-            
-            /* ->join('categories','title')
-            ->join('posts_information','description')
-            ->select('posts.title','categories.title','posts_information.description')
-            ->get(); */
-        }
-            
-            
-            dd($posts);
-
 
         return view('posts.index', compact('posts','columns'));
         
