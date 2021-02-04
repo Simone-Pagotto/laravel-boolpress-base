@@ -1,7 +1,7 @@
 @extends('layouts.main')
     <h1>POSTS</h1>
 @section('content')
-    <button>Crea nuovo Post</button>
+    <a href="{{route('posts.create')}}">Crea nuovo Post</a>
     
     <table>
         <thead>
@@ -15,7 +15,7 @@
             @foreach($posts as $post)
                 <tr>
                     <th>
-                        {{$post->id}}
+                        <a href="{{ route('posts.show',$post->id) }}">{{$post->id}}</a>   
                     </th>
                     <th>
                         {{$post->title}}
@@ -24,13 +24,23 @@
                         {{$post->category->title}}
                     </th>
                     <th>
-                        {{$post->postInformation->description}}
+                        @if($post->postInformation != null)
+                            {{$post->postInformation->description}}
+                        @else 
+                            no description available
+                        @endif
+                        {{-- {{$post->postInformation->description??'no description available'}} --}}
                     </th>
                     <th>
-                        <a href="">Aggiorna</a>
+                        <a href="{{route('posts.edit',$post->id)}}">Aggiorna</a>
                     </th>
                     <th>
-                        <a href="">Cancella</a>
+                        <form action="{{route('posts.destroy',$post)}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Cancella</button>
+                        </form>
+                        
                     </th>
                 </tr>
             @endforeach

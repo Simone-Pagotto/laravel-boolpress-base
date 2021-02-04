@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Post;
 use App\PostInformation;
+use Illuminate\Support\Str;
 
 class PostsController extends Controller
 {
@@ -34,7 +35,9 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        return view('posts.create', compact('categories'));
     }
 
     /**
@@ -45,7 +48,26 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newPost = new Post();
+
+        $newPostInformation = new PostInformation();
+
+        $newPost->title = $request['title_in'];
+
+        $newPost->author = $request['author_in'];
+
+        $newPost->category_id = $request['category_in'];
+
+        $newPostInformation->description = $request['description_in'];
+
+        $newPostInformation->slug = Str::of($request['title_in'])->slug('-');
+
+        $newPost->save();
+
+        $newPost->postInformation()->save($newPostInformation);//salvataggio relationship
+
+    
+        return view('posts.success');
     }
 
     /**
@@ -56,7 +78,9 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
+
+        return view('posts.show',compact('post'));
     }
 
     /**
@@ -67,7 +91,10 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        $categories = Category::all();
+
+        return view('posts.edit',compact('post','categories'));
     }
 
     /**
@@ -79,7 +106,28 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $updatingPost = Post::find($id);
+
+        $postInformationId = $updatingPost->postInformation->id;
+
+        $updatingPostInformation = PostInformation::find($postInformationId);
+
+        $updatingPost->title = $request['title_in'];
+
+        $updatingPost->author = $request['author_in'];
+
+        $updatingPost->category_id = $request['category_in'];
+
+        $updatingPostInformation->description = $request['description_in'];
+
+        $updatingPostInformation->slug = Str::of($request['title_in'])->slug('-');
+
+        $updatingPost->save();
+
+        $updatingPost->postInformation()->save($updatingPostInformation);//salvataggio relationship
+
+    
+        return view('posts.success');
     }
 
     /**
@@ -88,8 +136,12 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->postInformation->delete();
+
+        $post->delete;
+        
+        return redirect()->route('posts.index');
     }
 }
